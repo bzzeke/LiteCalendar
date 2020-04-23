@@ -4,11 +4,19 @@ import SnapKit
 public final class LiteCalendar: UIView, DaySelectorDelegate, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
 
     public struct Settings {
-        public var daysInWeek = 7
-        public var showDateLabel = false
-        public var style = CalendarStyle()
-        public var maxDate: Date? = nil
-        public var minDate: Date? = nil
+        public var daysInWeek: Int
+        public var showDateLabel: Bool
+        public var style: CalendarStyle
+        public var maxDate: Date?
+        public var minDate: Date?
+
+        public init(daysInWeek: Int = 7, showDateLabel: Bool = false, style: CalendarStyle = CalendarStyle(), maxDate: Date? = nil, minDate: Date? = nil) {
+            self.daysInWeek = daysInWeek
+            self.showDateLabel = showDateLabel
+            self.style = style
+            self.maxDate = maxDate
+            self.minDate = minDate
+        }
     }
 
     private var constraintsCreated = false
