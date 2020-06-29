@@ -84,6 +84,18 @@ extension Date {
                                                 yearForWeekOfYear: yearForWeekOfYear))!
     }
 
+    func endOfWeek(with calendar: Calendar) -> Date {
+
+        let weekEndDay = calendar.firstWeekday + 6
+        let weekOfYear = calendar.component(.weekOfYear, from: self)
+        let yearForWeekOfYear = calendar.component(.yearForWeekOfYear, from: self)
+
+        return calendar.date(from: DateComponents(calendar: calendar,
+                                                weekday: weekEndDay,
+                                                weekOfYear: weekOfYear,
+                                                yearForWeekOfYear: yearForWeekOfYear))!
+    }
+
 }
 
 

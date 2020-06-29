@@ -80,7 +80,7 @@ public final class DateLabel: UILabel, DaySelectorItemProtocol {
 
     private func animate(){
         UIView.transition(with: self,
-            duration: 0.4,
+            duration: 0.2,
             options: .transitionCrossDissolve,
             animations: {
                 self.updateState()

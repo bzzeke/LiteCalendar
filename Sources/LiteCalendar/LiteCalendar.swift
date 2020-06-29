@@ -9,13 +9,15 @@ public final class LiteCalendar: UIView, DaySelectorDelegate, UIPageViewControll
         public var style: CalendarStyle
         public var maxDate: Date?
         public var minDate: Date?
+        public var switchDateWhenPaging: Bool
 
-        public init(daysInWeek: Int = 7, showDateLabel: Bool = false, style: CalendarStyle = CalendarStyle(), maxDate: Date? = nil, minDate: Date? = nil) {
+        public init(daysInWeek: Int = 7, showDateLabel: Bool = false, style: CalendarStyle = CalendarStyle(), maxDate: Date? = nil, minDate: Date? = nil, switchDateWhenPaging: Bool = false) {
             self.daysInWeek = daysInWeek
             self.showDateLabel = showDateLabel
             self.style = style
             self.maxDate = maxDate
             self.minDate = minDate
+            self.switchDateWhenPaging = switchDateWhenPaging
         }
     }
 
@@ -183,6 +185,8 @@ public final class LiteCalendar: UIView, DaySelectorDelegate, UIPageViewControll
           centerView.selectedDate = newDate
           centerView.selectedIndex = currentWeekdayIndex
         }
+
+
     }
 
     // MARK: UIPageViewControllerDataSource
@@ -215,12 +219,20 @@ public final class LiteCalendar: UIView, DaySelectorDelegate, UIPageViewControll
         }
 
         if let selector = pageViewController.viewControllers?.first as? DaySelectorController {
-            selector.selectedIndex = currentWeekdayIndex
-            if let selectedDate = selector.selectedDate {
-            // FIXME: zeke
-                dateSelectorDidSelectDate(selectedDate)
+
+            if settings.switchDateWhenPaging {
+                selector.selectedIndex = currentWeekdayIndex
+                if let selectedDate = selector.selectedDate {
+                    dateSelectorDidSelectDate(selectedDate)
+                }
+            } else {
+                if (selector.startDate ... selector.startDate.endOfWeek(with: calendar)).contains(selectedDate) {
+                    let daysFrom = selectedDate.days(from: selector.startDate, calendar: calendar)
+                    selector.selectedIndex = daysFrom % settings.daysInWeek
+                }
             }
         }
+
         // Deselect all the views but the currently visible one
         (previousViewControllers as? [DaySelectorController])?.forEach{$0.selectedIndex = -1}
     }
